@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Temperature Hot</title>
+    <title>Weather API</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,20 +22,41 @@
     <div class="container">
         <form class="col-md-6 m-auto py-5">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <input id="input" style="background-color:transparent;" type="text" class="form-control text-light" placeholder="Enter a location for Weather ...">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-danger">Search</button>
+                    <button onclick="s()" type="button" class="btn btn-outline-primary text-light">Search</button>
                 </div>
             </div>
         </form>
-        <div class="weather-status text-white text-center">
+        <div id="block" class="weather-status text-white text-center">
             <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
-            <h1>Dhaka</h1>
-            <h3><span>38.06</span>&deg;C</h3>
-            <h1 class="lead">Clouds</h1>
+            <h1 id="name">Search your City</h1>
+            <h3><span id="temp">0</span>&deg;C</h3>
+            <h1 id="state" class="lead">---</h1>
+            <h1 id="country">Country: N/A</h1>
         </div>
     </div>
+<script>
+const API = "e31fa1597ffc81bc4822ddcd7989bdb4";
 
+
+function s() {
+let city = document.getElementById('input').value;
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API}&units=metric`)
+      .then(response => response.json())
+      .then(json => dD(json));
+
+function dD(data) {
+if (!data.name) {document.getElementById("block").classList.add("d-none");} else {
+document.getElementById("block").classList.remove("d-none");
+document.getElementById("name").innerHTML = data.name;
+document.getElementById("temp").innerHTML = data.main.temp;
+document.getElementById("state").innerHTML = data.weather[0].main;
+document.getElementById("country").innerHTML = "Country: " + data.sys.country;
+}
+}
+}
+</script>
 </body>
 
 </html>
